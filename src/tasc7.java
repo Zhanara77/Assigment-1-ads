@@ -1,0 +1,2 @@
+public class tasc7 {
+}
