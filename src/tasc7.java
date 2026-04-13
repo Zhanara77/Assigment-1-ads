@@ -1,14 +1,38 @@
+import java.util.*;
+
 public class tasc7 {
-    static void spiral(int[][] a, int top, int bottom, int left, int right, int num) {
-        if (top > bottom || left > right) return;
+    private PriorityQueue<Integer> small = new PriorityQueue<>(Collections.reverseOrder());
+    private PriorityQueue<Integer> large = new PriorityQueue<>();
 
-        for (int i = left; i <= right; i++) a[top][i] = num++;
-        for (int i = top + 1; i <= bottom; i++) a[i][right] = num++;
-        if (top < bottom)
-            for (int i = right - 1; i >= left; i--) a[bottom][i] = num++;
-        if (left < right)
-            for (int i = bottom - 1; i > top; i--) a[i][left] = num++;
+    public void addNum(int num) {
+        small.add(num);
 
-        spiral(a, top + 1, bottom - 1, left + 1, right - 1, num);
+        if (!large.isEmpty() && small.peek() > large.peek()) {
+            large.add(small.poll());
+        }
+
+        if (small.size() > large.size() + 1) {
+            large.add(small.poll());
+        }
+
+        if (large.size() > small.size()) {
+            small.add(large.poll());
+        }
+    }
+
+    public double findMedian() {
+        if (small.size() > large.size()) return small.peek();
+        return (small.peek() + large.peek()) / 2.0;
+    }
+
+    public static void main(String[] args) {
+        task7 mf = new task7();
+
+        mf.a(1);
+        mf.a(2);
+        System.out.println(mf.f()); // 1.5
+
+        mf.a(3);
+        System.out.println(mf.f()); // 2
     }
 }
